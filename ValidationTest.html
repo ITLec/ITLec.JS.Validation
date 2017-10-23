@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title>Form Validation</title>
+	      <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="css/mystyles.css" rel="stylesheet">
+	 <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/bootstrap-social.css" rel="stylesheet">
+	 <link href="css/font-awesome.css" rel="stylesheet">
+	 	<script>
+		    function itlec_validate_form() {
+        var isValid= true;
+        isValid= itlec_validate_control('mail') && isValid;
+        warningMessage('mail');
+		
+        isValid= itlec_validate_control('phone') && isValid;
+        warningMessage('phone');
+		
+		isValid= itlec_validate_control('uname') && isValid;
+        warningMessage('uname');
+		isValid= itlec_validate_control('des') && isValid;
+        warningMessage('des');
+		
+        if (!isValid) {
+            $('html,body').scrollTop(0);
+        }
+        return isValid;
+    }
+	</script>
+	</head>
+<body>
+<div class="container">
+            <div class="row row-content">
+			<div class="col-xs-12 col-sm-12">
+			<form class="form-horizontal" role="form" method="post" action="index.html" novalidate id="myform" name="myform" onsubmit="return itlec_validate_form();">
+			
+			<div id="divallmsgs"></div>
+			<br>
+			  <div class="form-group col-sm-9" id="name">
+              <label for="fullname" class="col-sm-3 control-label">User name</label>
+			  <div class="col-sm-6" id="parentfullname">
+               <input type="text" class="form-control" id="uname" value="" placeholder="Enter name"  data-itlec-isrequired=true data-itlec-divmsgname="unameMSG" 
+			   data-itlec-requiredmsg="Please Enter text" data-itlec-minimumcharacters=10 data-itlec-minimumlettersmsg="this text must contains more than 10 characters"
+			    data-itlec-regexp="[a-zA-Z]+" data-itlec-regexpmsg="Please enter valid user name with characters." />
+			  
+			  <div id="unameMSG"></div>
+			  </div>
+	       	</div>
+			
+			
+			  <div class="form-group col-sm-9" id="name">
+              <label for="fullname" class="col-sm-3 control-label">Email</label>
+			  <div class="col-sm-6" id="parentfullname">
+               <input type="text" class="form-control" id="mail" value="" placeholder="Enter mail"  data-itlec-isrequired=true data-itlec-divmsgname="mailMSG" data-itlec-requiredmsg="Please Enter E-Mail"   
+                    data-itlec-regexp="^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$" data-itlec-regexpmsg="Please enter valid E-mail."  />
+			  <div id="mailMSG"></div>
+			  </div>
+	       	</div>
+			
+		
+			  <div class="form-group col-sm-9" id="name">
+              <label for="fullname" class="col-sm-3 control-label">phone</label>
+			  <div class="col-sm-6" id="parentfullname">
+               <input type="text" class="form-control" id="phone" value="" placeholder="Enter phone"  data-itlec-isrequired=true data-itlec-divmsgname="phoneMSG" data-itlec-requiredmsg="Please Enter phone"   
+                    data-itlec-regexp="[0-9]" data-itlec-regexpmsg="Please enter numbers only."  />
+			  <div id="phoneMSG"></div>
+			  </div>
+	       	</div>
+			
+	       	</div>
+			
+			
+			<div class="form-group col-sm-9" id="name">
+              <label for="fullname" class="col-sm-3 control-label">Description</label>
+			  <div class="col-sm-6" id="parentfullname">
+               <input type="text" class="form-control" id="des" value="" placeholder="Enter name"  data-itlec-isrequired=true data-itlec-divmsgname="desMSG" 
+			   data-itlec-requiredmsg="Please Enter description" data-itlec-minimumwords=10 data-itlec-minimumwordsmsg="your text must be greater that 10 words"
+			    data-itlec-regexp="[a-zA-Z]+" data-itlec-regexpmsg="Please enter valid description with characters." />
+			  
+			  <div id="desMSG"></div>
+			  </div>
+	       	</div>
+			
+			
+
+		  <div class="form-group col-sm-9">
+                        <div class="col-sm-offset-3">
+                          <button type="button" class="btn btn-primary" onclick="return itlec_validate_form();">Submit</button>
+						    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+					
+			</form>
+			</div>
+			</div>
+
+
+
+
+
+
+
+
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+ <script src="js/bootstrap.min.js"></script>
+ <script src="ITLecValidationScript.js"></script>
+</body>
+</html>
