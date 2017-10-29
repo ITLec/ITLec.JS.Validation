@@ -28,6 +28,10 @@ function itlec_countWords(controlName){
 	}
 	
 	return count;
+}	
+function itlec_onchange_validate(controlName){
+	itlec_validate_control(controlName);
+	warningMessage(controlName);
 }
 function itlec_validate_control(controlName) {
     var sucess = false;
