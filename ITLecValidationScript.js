@@ -1,6 +1,29 @@
+function itlec_ValidateAllControls() {
+    var elements = document.querySelectorAll("[data-itlec-enablevalidation='1']");
+
+    var isValid = true;
+
+    for (var i in elements) {
+        if (elements.hasOwnProperty(i)) {
+            //  alert(elements[i].getAttribute('data-itlec-requiredmsg'));
+            var controlId = elements[i].getAttribute('id');
+            isValid = itlec_validate_control(controlId) && isValid;
+            itlec_warningMessage(controlId);
+        }
+    }
+
+
+    if (!isValid) {
+        $('html,body').scrollTop(0);
+    }
+    return isValid;
+
+}
+/*---------------------------------------------------------------------------------------*/
 function itlec_IsRequired(controlName) {
     var required = false;
-    required = Boolean(itlec_getAttributeValue(controlName, "data-itlec-isrequired"));
+    var isRequired = itlec_getAttributeValue(controlName, "data-itlec-isrequired");
+    required = (isRequired == "true") || (isRequired == true);
     return required;
 }
 
@@ -13,25 +36,25 @@ function itlec_GetControlValue(controlName) {
 function itlec_getAttributeValue(controlName, attributeName) {
     var required_msg = "";
     var _control = document.getElementById(controlName);
-	
+
     required_msg += _control.getAttribute(attributeName);
     return required_msg;
 }
-function itlec_countWords(controlName){
-	var controlValue=itlec_GetControlValue(controlName);
-	var count=0;
-	var space=" ";
-	for(var i=0;i<controlValue.length;i++){
-		if(controlValue[i]==space){
-			count++;
-		}
-	}
-	
-	return count;
-}	
-function itlec_onchange_validate(controlName){
-	itlec_validate_control(controlName);
-	warningMessage(controlName);
+function itlec_countWords(controlName) {
+    var controlValue = itlec_GetControlValue(controlName);
+    var count = 0;
+    var space = " ";
+    for (var i = 0; i < controlValue.length; i++) {
+        if (controlValue[i] == space) {
+            count++;
+        }
+    }
+
+    return count;
+}
+function itlec_onchange_validate(controlName) {
+    itlec_validate_control(controlName);
+    itlec_warningMessage(controlName);
 }
 function itlec_validate_control(controlName) {
     var sucess = false;
@@ -50,44 +73,44 @@ function itlec_validate_control(controlName) {
                 if (itlec_getAttributeValue(controlName, "data-itlec-regexp") != "null") {
                     var pattern = new RegExp(itlec_getAttributeValue(controlName, "data-itlec-regexp"), "g");
                     var result = controlValue.search(pattern);
-					
+
                     if (result == 0) {
-						//  get value and check on characters 
-						if( itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")!="null"){
-						if(itlec_GetControlValue(controlName).length > itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")){
-                        parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
-                        sucess = true;
-						}
-						else if(itlec_GetControlValue(controlName).length < itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")){
-					     message = "";
-                        message += itlec_getAttributeValue(controlName, "data-itlec-minimumlettersmsg");
-                        document.getElementById("itlec" + controlName + "msg").innerHTML = "<p>" + message + "</p>";
-                        sucess = false;
-					
-					}
-						}
-					  else if(itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")=="null"){
-						 
-						 if( itlec_getAttributeValue(controlName, "data-itlec-minimumwords")!="null"){
-						if(itlec_countWords(controlName)>itlec_getAttributeValue(controlName, "data-itlec-minimumwords")){
-						parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
-                          sucess = true;
-						}else if(itlec_countWords(controlName)<itlec_getAttributeValue(controlName, "data-itlec-minimumwords")){
-						message = "";
-                        message += itlec_getAttributeValue(controlName, "data-itlec-minimumwordsmsg");
-                        document.getElementById("itlec" + controlName + "msg").innerHTML = "<p>" + message + "</p>";
-                        sucess = false;
-						}							
-							
-						}
-						else if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords")=="null"){
-					    parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
-                        sucess = true;
-						}
-						
-					   
-						}
-					
+                        //  get value and check on characters 
+                        if (itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters") != "null") {
+                            if (itlec_GetControlValue(controlName).length > itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")) {
+                                parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
+                                sucess = true;
+                            }
+                            else if (itlec_GetControlValue(controlName).length < itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")) {
+                                message = "";
+                                message += itlec_getAttributeValue(controlName, "data-itlec-minimumlettersmsg");
+                                document.getElementById("itlec" + controlName + "msg").innerHTML = "<p>" + message + "</p>";
+                                sucess = false;
+
+                            }
+                        }
+                        else if (itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters") == "null") {
+
+                            if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords") != "null") {
+                                if (itlec_countWords(controlName) > itlec_getAttributeValue(controlName, "data-itlec-minimumwords")) {
+                                    parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
+                                    sucess = true;
+                                } else if (itlec_countWords(controlName) < itlec_getAttributeValue(controlName, "data-itlec-minimumwords")) {
+                                    message = "";
+                                    message += itlec_getAttributeValue(controlName, "data-itlec-minimumwordsmsg");
+                                    document.getElementById("itlec" + controlName + "msg").innerHTML = "<p>" + message + "</p>";
+                                    sucess = false;
+                                }
+
+                            }
+                            else if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords") == "null") {
+                                parent.removeChild(document.getElementById("itlec" + controlName + "msg"));
+                                sucess = true;
+                            }
+
+
+                        }
+
                     }
                     else if (result == -1) {
                         message = "";
@@ -109,7 +132,7 @@ function itlec_validate_control(controlName) {
             }
         }
         else if (controlValue == "") {
-             
+
             var msgElementId = "itlec" + controlName + "msg";
 
             var div = document.getElementById(msgElementId);
@@ -118,8 +141,8 @@ function itlec_validate_control(controlName) {
                 var div = document.createElement('div');
                 div.id = msgElementId;
             }
-                div.innerHTML = "<p>" + message + "</p>";
-                parent.appendChild(div);
+            div.innerHTML = "<p>" + message + "</p>";
+            parent.appendChild(div);
 
             sucess = false;
 
@@ -145,7 +168,7 @@ function createWarningSubDiv(id) {
 function removeWarningSubDiv(id) {
     document.getElementById('warning').removeChild(document.getElementById(id));
 }
-function addWarningMessage(message, controlName, container) {
+function itlec_addWarningMessage(message, controlName, container) {
     var mess = document.createElement('a');
     mess.innerHTML = message + "<br />";
     mess.href = "javascript:document.getElementById('" + controlName + "').focus()";
@@ -156,51 +179,51 @@ function checkRegularExpression(controlName, controlValue) {
     var pattern = new RegExp(itlec_getAttributeValue(controlName, "data-itlec-regexp"), "g");
     var result = controlValue.search(pattern);
     if (result == 0) {
-        
-		if( itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")!="null"){
-						if(itlec_GetControlValue(controlName).length > itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")){
-                       removeWarningSubDiv("itlec" + controlName + "warningmsg");
-						}
-						else if(itlec_GetControlValue(controlName).length < itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")){
-		                 message = "";
-                        message += itlec_getAttributeValue(controlName, "data-itlec-minimumlettersmsg");
-                       var container = document.getElementById("itlec" + controlName + "warningmsg");
-                      addWarningMessage(message, controlName, container);
-                    
-					
-					}
-						}
-					  else if(itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")=="null"){
-						 
-						 if( itlec_getAttributeValue(controlName, "data-itlec-minimumwords")!="null"){
-						if(itlec_countWords(controlName)>itlec_getAttributeValue(controlName, "data-itlec-minimumwords")){
-						removeWarningSubDiv("itlec" + controlName + "warningmsg");
-						}else if(itlec_countWords(controlName)<itlec_getAttributeValue(controlName, "data-itlec-minimumwords")){
-					
-						message = "";
-                        message += itlec_getAttributeValue(controlName, "data-itlec-minimumwordsmsg");
-                         var container = document.getElementById("itlec" + controlName + "warningmsg");
-                      addWarningMessage(message, controlName, container);
-						}							
-							
-						}
-						else if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords")=="null"){
-					      removeWarningSubDiv("itlec" + controlName + "warningmsg");
-						}
-						
-					   
-						}
-					
+
+        if (itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters") != "null") {
+            if (itlec_GetControlValue(controlName).length > itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")) {
+                removeWarningSubDiv("itlec" + controlName + "warningmsg");
+            }
+            else if (itlec_GetControlValue(controlName).length < itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters")) {
+                message = "";
+                message += itlec_getAttributeValue(controlName, "data-itlec-minimumlettersmsg");
+                var container = document.getElementById("itlec" + controlName + "warningmsg");
+                itlec_addWarningMessage(message, controlName, container);
+
+
+            }
+        }
+        else if (itlec_getAttributeValue(controlName, "data-itlec-minimumcharacters") == "null") {
+
+            if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords") != "null") {
+                if (itlec_countWords(controlName) > itlec_getAttributeValue(controlName, "data-itlec-minimumwords")) {
+                    removeWarningSubDiv("itlec" + controlName + "warningmsg");
+                } else if (itlec_countWords(controlName) < itlec_getAttributeValue(controlName, "data-itlec-minimumwords")) {
+
+                    message = "";
+                    message += itlec_getAttributeValue(controlName, "data-itlec-minimumwordsmsg");
+                    var container = document.getElementById("itlec" + controlName + "warningmsg");
+                    itlec_addWarningMessage(message, controlName, container);
+                }
+
+            }
+            else if (itlec_getAttributeValue(controlName, "data-itlec-minimumwords") == "null") {
+                removeWarningSubDiv("itlec" + controlName + "warningmsg");
+            }
+
+
+        }
+
     }
     else if (result == -1) {
         message = "";
         message += itlec_getAttributeValue(controlName, "data-itlec-regexpmsg");
         var container = document.getElementById("itlec" + controlName + "warningmsg");
-        addWarningMessage(message, controlName, container);
+        itlec_addWarningMessage(message, controlName, container);
     }
 }
 
-function warningMessage(controlName) {
+function itlec_warningMessage(controlName) {
     var message = "";
     var _control = document.getElementById(controlName);
     var required = itlec_IsRequired(controlName);
@@ -242,7 +265,7 @@ function warningMessage(controlName) {
                 document.getElementById('warning').style.visibility = "visible";
                 createWarningSubDiv("itlec" + controlName + "warningmsg");
                 var container = document.getElementById("itlec" + controlName + "warningmsg");
-                addWarningMessage(message, controlName, container);
+                itlec_addWarningMessage(message, controlName, container);
             }
 
         }
