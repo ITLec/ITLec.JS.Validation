@@ -1,8 +1,6 @@
 function itlec_ValidateAllControls() {
     var elements = document.querySelectorAll("[data-itlec-enablevalidation='1']");
-
     var isValid = true;
-
     for (var i in elements) {
         if (elements.hasOwnProperty(i)) {
             //  alert(elements[i].getAttribute('data-itlec-requiredmsg'));
@@ -12,12 +10,10 @@ function itlec_ValidateAllControls() {
         }
     }
 
-
     if (!isValid) {
         $('html,body').scrollTop(0);
     }
     return isValid;
-
 }
 /*---------------------------------------------------------------------------------------*/
 function itlec_IsRequired(controlName) {
@@ -147,6 +143,10 @@ function itlec_validate_control(controlName) {
             sucess = false;
 
         }
+    }
+    else
+    {
+        sucess = true;
     }
     return sucess;
 }
